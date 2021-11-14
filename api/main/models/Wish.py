@@ -1,4 +1,4 @@
-wfrom sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID
 
 from main import db
 from main.models import AddInf, BaseModel
