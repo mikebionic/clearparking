@@ -10,6 +10,8 @@ class Inv_line(AddInf, BaseModel, db.Model):
 	InvLineId = db.Column("InvLineId",db.Integer,nullable=False,primary_key=True)
 	InvLineGuid = db.Column("InvLineGuid",UUID(as_uuid=True),unique=True)
 	InvId = db.Column("InvId",db.Integer,db.ForeignKey("tbl_dk_invoice.InvId"))
+	UnitId = db.Column("UnitId",db.Integer,db.ForeignKey("tbl_dk_unit.UnitId"))
+	CurrencyId = db.Column("CurrencyId",db.Integer,db.ForeignKey("tbl_dk_currency.CurrencyId"))
 	ResId = db.Column("ResId",db.Integer,db.ForeignKey("tbl_dk_resource.ResId"))
 	LastVendorId = db.Column("LastVendorId",db.Integer,db.ForeignKey("tbl_dk_rp_acc.RpAccId"))
 	InvLineRegNo = db.Column("InvLineRegNo",db.String(100),nullable=False,unique=True)

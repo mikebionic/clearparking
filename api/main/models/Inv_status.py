@@ -14,6 +14,7 @@ class Inv_status(BaseModel, db.Model):
 	InvStatDesc_ruRU = db.Column("InvStatDesc_ruRU",db.String(500))
 	InvStatName_enUS = db.Column("InvStatName_enUS",db.String(100))
 	InvStatDesc_enUS = db.Column("InvStatDesc_enUS",db.String(500))
+	Order_inv = db.relationship("Order_inv",backref='inv_status',lazy=True)
 	Invoice = db.relationship("Invoice",backref='inv_status',lazy=True)
 
 	def to_json_api(self):

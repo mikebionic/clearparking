@@ -17,7 +17,7 @@ class Invoice(AddInf, BaseModel, db.Model):
 	CId = db.Column("CId",db.Integer,db.ForeignKey("tbl_dk_company.CId"))
 	DivId = db.Column("DivId",db.Integer,db.ForeignKey("tbl_dk_division.DivId"))
 	WhId = db.Column("WhId",db.Integer,db.ForeignKey("tbl_dk_warehouse.WhId"))
-	WpId = db.Column("WpId",db.Integer,db.ForeignKey("tbl_dk_work_period.WpId")) #?
+	WpId = db.Column("WpId",db.Integer,db.ForeignKey("tbl_dk_work_period.WpId"))
 	EmpId = db.Column("EmpId",db.Integer,db.ForeignKey("tbl_dk_employee.EmpId"))
 	PtId = db.Column("PtId",db.Integer,db.ForeignKey("tbl_dk_payment_type.PtId"))
 	PmId = db.Column("PmId",db.Integer,db.ForeignKey("tbl_dk_payment_method.PmId"))

@@ -11,8 +11,8 @@ class Res_price(BaseModel, db.Model):
 	ResPriceGuid = db.Column("ResPriceGuid",UUID(as_uuid=True),unique=True)
 	ResPriceTypeId = db.Column("ResPriceTypeId",db.Integer,db.ForeignKey("tbl_dk_res_price_type.ResPriceTypeId"))
 	ResPriceGroupId = db.Column("ResPriceGroupId",db.Integer,db.ForeignKey("tbl_dk_res_price_group.ResPriceGroupId"))
-	# UnitId = db.Column("UnitId",db.Integer,db.ForeignKey("tbl_dk_unit.UnitId"))
-	# CurrencyId = db.Column("CurrencyId",db.Integer,db.ForeignKey("tbl_dk_currency.CurrencyId"))
+	UnitId = db.Column("UnitId",db.Integer,db.ForeignKey("tbl_dk_unit.UnitId"))
+	CurrencyId = db.Column("CurrencyId",db.Integer,db.ForeignKey("tbl_dk_currency.CurrencyId"))
 	ResId = db.Column("ResId",db.Integer,db.ForeignKey("tbl_dk_resource.ResId"))
 	ResPriceRegNo = db.Column("ResPriceRegNo",db.String(100),nullable=False)
 	ResPriceValue = db.Column("ResPriceValue",db.Float,default=0.0)
@@ -25,8 +25,8 @@ class Res_price(BaseModel, db.Model):
 			"ResPriceGuid": self.ResPriceGuid,
 			"ResPriceTypeId": self.ResPriceTypeId,
 			"ResPriceGroupId": self.ResPriceGroupId,
-			# "UnitId": self.UnitId,
-			# "CurrencyId": self.CurrencyId,
+			"UnitId": self.UnitId,
+			"CurrencyId": self.CurrencyId,
 			"ResId": self.ResId,
 			"ResPriceRegNo": self.ResPriceRegNo,
 			"ResPriceValue": self.ResPriceValue,
