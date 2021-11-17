@@ -30,6 +30,11 @@ int entrance_laser2_state = 0;
 int exit_laser1_state = 0;
 int exit_laser2_state = 0;
 
+int entrance_relay_down = 8
+int entrance_relay_up = 9
+int exit_relay_down = 10
+int exit_relay_up = 11
+
 
 void handlePong() {
   server.send(200, "text/html", device_key);
@@ -115,6 +120,11 @@ void setup(){
   pinMode(entrance_laser2, INPUT);
   pinMode(exit_laser1, INPUT);
   pinMode(exit_laser2, INPUT);
+
+  pinMode(entrance_relay_down, OUTPUT);
+  pinMode(entrance_relay_up, OUTPUT);
+  pinMode(exit_relay_down0, OUTPUT);
+  pinMode(exit_relay_up1, OUTPUT);
 
   server.on("/ping/", handlePong);  
   server.on("/check-car-presence/", check_car_presence);
