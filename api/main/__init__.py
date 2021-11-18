@@ -15,5 +15,5 @@ login_manager.login_view = 'login_page'
 login_manager.login_message = 'Ulgama girin!'
 login_manager.login_message_category = 'info'
 
-from main.api import *
+from main.parking_api import *
 from main.views import *

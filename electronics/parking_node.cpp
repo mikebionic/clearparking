@@ -45,6 +45,12 @@ void check_car_presence() {
   String state = "0";
   String type = server.arg("type");
   type.trim();
+
+  String key = server.arg("device_key");
+  if (key != device_key){
+    server.send(401, "text/html", state);
+  }
+
   if (type == "entrance"){
     if (entrance_laser1_state == 1 && entrance_laser2_state == 1){
       state = "1";

@@ -36,5 +36,8 @@ class Config:
 	SQLALCHEMY_ECHO = int(environ.get('SQLALCHEMY_ECHO')) if environ.get('SQLALCHEMY_ECHO') else 0
 	API_URL_PREFIX = environ.get('API_URL_PREFIX') or '/api'
 
+	IOT_DEVICE_URL = environ.get('IOT_DEVICE_URL') or "192.168.1.100"
+	IOT_DEVICE_KEY = environ.get('IOT_DEVICE_KEY') or "secret_key"
+
 	ADMIN_USERNAME = "admin"
 	ADMIN_PIN = "123"
