@@ -12,6 +12,8 @@ class Config:
 	APP_BASEDIR = path.abspath('.')
 
 	SECRET_KEY = environ.get('SECRET_KEY')
+
+	IOT_SYNCH_SHA = environ.get('IOT_SYNCH_SHA')
 	APP_PORT = int(environ.get('APP_PORT')) if environ.get('APP_PORT') else 5000
 	APP_HOST = environ.get('APP_HOST') or "0.0.0.0"
 
@@ -41,3 +43,4 @@ class Config:
 
 	ADMIN_USERNAME = "admin"
 	ADMIN_PIN = "123"
+	IOT_RESOURCE_GUID = environ.get('IOT_DEVICE_KEY')
