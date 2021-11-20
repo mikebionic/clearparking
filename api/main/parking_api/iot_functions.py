@@ -29,6 +29,9 @@ def open_gates(park_type = "entrance", direction = "up"):
 
 
 def manage_iot_device(park_type = "entrance"):
+	if Config.SIMULATE_REQUEST:
+		return
+
 	if check_car_presence(park_type):
 		if open_gates(park_type):
 			print(f"++clearparking++: {datetime.now()} | Opening Gates of {park_type}")
@@ -37,3 +40,5 @@ def manage_iot_device(park_type = "entrance"):
 
 	else:
 		print(f"--clearparking--: {datetime.now()} | Car is not on the road..")
+	
+	return
