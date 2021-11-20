@@ -1,5 +1,25 @@
 # ClearParking Smart parking IoT System
 
+## Workflow
+
+So there should be a resource in database with its price and all data.. (total, etc..)
+The Res_price is a price for a minute used by resource.
+
+We take the Resource ResGuid and put into .env
+
+There should be a user (Rp_acc) with it's registered Device (qr-code), and Rp_acc should have it's Rp_acc_trans_total.
+
+In the entrance, scanner scans the QR-code and finds a Device and its Rp_acc, it records the Attendance AttStartDate, Specify it by AttTypeId.
+In the exit, scanner scans the QR and records the Attendance AttEndDate, then calculates the Whole time spent or used by Resource and returns its price.
+
+------ 
+in case if you don't have attendance table:
+```sql
+create table tbl_dk_attendance("AttId" int, "AttGuid" varchar, "EmpId" int, "RpAccId" int, "DevId" int, "UId" int, "AttTypeId" int, "AttDesc" varchar, "AttDate" timestamp without time zone,"CreatedDate" timestamp without time zone,"ModifiedDate" timestamp without time zone);
+```
+
+----------
+
 ## API
 
 Route: "/find-device/"
@@ -127,23 +147,27 @@ urlParams: type=["entrance", "exit"]
 }
 ```
 
-------------------------------------
+-------------
+## IoT Device Set Ip function to update it if changes:
 
-## Workflow
+Route: "/set-ip/"
+Method: GET
+urlParams: device_key={secret_key_of_device_in_env}
 
-So there should be a resource in database with its price and all data.. (total, etc..)
-The Res_price is a price for a minute used by resource.
+-------------
 
-We take the Resource ResGuid and put into .env
+## Other data routes for UI
 
-There should be a user (Rp_acc) with it's registered Device (qr-code), and Rp_acc should have it's Rp_acc_trans_total.
+/clearpark/attendances/
+/clearpark/rp-accs/
+/clearpark/devices/
 
-In the entrance, scanner scans the QR-code and finds a Device and its Rp_acc, it records the Attendance AttStartDate, Specify it by AttTypeId.
-In the exit, scanner scans the QR and records the Attendance AttEndDate, then calculates the Whole time spent or used by Resource and returns its price.
+> Response
 
-
------- 
-in case if you don't have attendance table:
-```sql
-create table tbl_dk_attendance("AttId" int, "AttGuid" varchar, "EmpId" int, "RpAccId" int, "DevId" int, "UId" int, "AttTypeId" int, "AttDesc" varchar, "AttDate" timestamp without time zone,"CreatedDate" timestamp without time zone,"ModifiedDate" timestamp without time zone);
+```json
+{
+  "status": 1,
+  "data": "[...data]",
+  "message": "Info"
+}
 ```
