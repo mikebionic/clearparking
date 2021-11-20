@@ -36,4 +36,4 @@ def manage_iot_device(park_type = "entrance"):
 			print(f"++clearparking++: {datetime.now()} | Unable to open gates of {park_type}")
 
 	else:
-		print(f"--clearparking--: {datetime.now()} | Car doesn't exist")
+		print(f"--clearparking--: {datetime.now()} | Car is not on the road..")

@@ -2,8 +2,7 @@
 from flask import jsonify, request
 from functools import wraps
 
-from main_pack.config import Config
-
+from main.config import Config
 
 def get_bearer_from_header(auth_header):
 	auth_token = None
@@ -13,6 +12,7 @@ def get_bearer_from_header(auth_header):
 		auth_token = auth_header.split(" ")[1]
 	except:
 		pass
+	return auth_token
 
 
 def iot_sha_required(f):

@@ -1,5 +1,7 @@
 
 from sqlalchemy.orm import joinedload
+import uuid
+from datetime import datetime
 
 
 from main.models import Invoice, Inv_line, Resource, Attendance

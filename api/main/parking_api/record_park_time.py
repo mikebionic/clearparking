@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 import uuid
 from datetime import datetime
+import random
+
+from main.models.Attendance import Attendance
+from main import db
 
 
 def get_att_type_id(type_name):
@@ -30,6 +34,7 @@ def record_park_time(rp_acc_model, device_model, park_type = "entrance"):
 	print("Here should be an insertion to attendance table")
 
 	this_att_data = {
+		"AttId": random.randint(1,1009990),
 		"AttGuid": uuid.uuid4(),
 		"RpAccId": rp_acc_model.RpAccId,
 		"DevId": device_model.DevId,
@@ -37,6 +42,8 @@ def record_park_time(rp_acc_model, device_model, park_type = "entrance"):
 		"AttDate": datetime.now(),
 		"AttDesc": f"{rp_acc_model.RpAccUName} | {rp_acc_model.RpAccGuid}, | {park_type} | {str(device_model.to_json_api())}",
 	}
-	print(this_att_data)
-	data = this_att_data
+	this_attendance = Attendance(**this_att_data)
+	db.session.add(this_attendance)
+	db.session.commit()
+	data = this_attendance.to_json_api()
 	return data, message
