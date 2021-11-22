@@ -13,6 +13,7 @@ class Config:
 
 	SECRET_KEY = environ.get('SECRET_KEY')
 
+	# This is for flutter or other frontend
 	IOT_SYNCH_SHA = environ.get('IOT_SYNCH_SHA')
 	APP_PORT = int(environ.get('APP_PORT')) if environ.get('APP_PORT') else 5000
 	APP_HOST = environ.get('APP_HOST') or "0.0.0.0"
@@ -36,6 +37,7 @@ class Config:
 	SQLALCHEMY_ECHO = int(environ.get('SQLALCHEMY_ECHO')) if environ.get('SQLALCHEMY_ECHO') else 0
 	API_URL_PREFIX = environ.get('API_URL_PREFIX') or '/api'
 
+	# This is for device itself
 	IOT_DEVICE_URL = environ.get('IOT_DEVICE_URL') or "http://192.168.1.100"
 	IOT_DEVICE_KEY = environ.get('IOT_DEVICE_KEY') or "secret_key"
 
