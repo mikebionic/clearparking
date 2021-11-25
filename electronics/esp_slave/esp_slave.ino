@@ -85,7 +85,7 @@ void control_gates() {
       Serial.println("type:entrance:direction:down");
     }
   }
-  if (type == "exit") {
+  else if (type == "exit") {
     if (directions == "up") {
       Serial.println("type:exit:direction:up");
     }
@@ -104,22 +104,15 @@ void check_car_presence() {
   if (key != device_key) {
     server.send(401, "text/html", state);
   }
-  if (val_entrance_sensor_1 == "0") {
-    Serial.println("OK");
-  }
-  if (val_entrance_sensor_2 == "0") {
-    Serial.println("OK");
-  }
-
   if (type == "entrance") {
-    if (val_entrance_sensor_1 == "0" && val_entrance_sensor_2 == "0") {
+    if (val_entrance_sensor_1 == "0" and val_entrance_sensor_2 == "0") {
       state = "1";
     } else {
       state = "0";
     }
   }
-  if (type == "exit") {
-    if (val_entrance_sensor_1 == "0" && val_entrance_sensor_2 == "0") {
+  else if (type == "exit") {
+    if (val_entrance_sensor_1 == "0" and val_entrance_sensor_2 == "0") {
       state = "1";
     } else {
       state = "0";

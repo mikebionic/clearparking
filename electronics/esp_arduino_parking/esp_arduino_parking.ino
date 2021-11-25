@@ -1,8 +1,13 @@
 int entrance_sensor_1 = 8;
 int entrance_relay = LED_BUILTIN;
+int val_entrance_sensor_1;
+int val_entrance_sensor_3 = 1;
+
 bool gate_state = false;
+
 unsigned long previous_millis = 0;
 String data;
+
 
 void setup() {
   Serial.begin(115200);
@@ -14,13 +19,20 @@ void loop() {
   //values of sensors
   if (millis() - previous_millis >= 500) {
     previous_millis = millis();
-    int val_entrance_sensor_1 = digitalRead(entrance_sensor_1);
+    val_entrance_sensor_1 = digitalRead(entrance_sensor_1);
     Serial.println("val_entrance_sensor_1:" + String(val_entrance_sensor_1) + ":val_entrance_sensor_2:" + String(val_entrance_sensor_1));
-    if (Serial.available() != 0) {
-      String data = Serial.readStringUntil('\n');
-      data.trim();
+    Serial.println(gate_state);
+  }
+  if (Serial.available() != 0) {
+    String data = Serial.readStringUntil('\n');
+    data.trim();
+    if (data.length() > 15) {
       gate_management(data);
     }
+  }
+  if (gate_state == true and val_entrance_sensor_1 == 0  and val_entrance_sensor_3 == 1) {
+    Serial.println("Close Door");
+    gate_state = false;
   }
 }
 
@@ -30,6 +42,7 @@ void gate_management(String data) {
   String gate_direction = getValue(data, ':', 3);
   Serial.println(gate_type + " " + gate_direction);
   if (gate_type == "entrance" && gate_direction == "up") {
+    gate_state = true;
     Serial.println("OK");
   } else {
     Serial.println("Error Here is No Car");
