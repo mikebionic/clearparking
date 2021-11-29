@@ -18,9 +18,12 @@ def find_device():
 
 	try:
 		req = request.get_json()
+		print(req)
 		DevUniqueId = req.get("data")
 
 		this_device = Device.query.filter_by(DevUniqueId = DevUniqueId).first()
+
+		print(this_device)
 
 		if not this_device:
 			print(f"--clearparking--: {datetime.now()} | Device not found {DevUniqueId}")
@@ -30,6 +33,7 @@ def find_device():
 			print(f"--clearparking--: {datetime.now()} | Device doesn't have an Rp_acc")
 
 		this_rp_acc = this_device.rp_acc
+		print(this_rp_acc)
 		data = this_rp_acc.to_json_api()
 		data["Device"] = this_device.to_json_api()
 

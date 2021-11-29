@@ -46,3 +46,4 @@ class Config:
 	IOT_RESOURCE_GUID = environ.get('IOT_RESOURCE_GUID')
 	REG_NUM_RANDOM_RANGE = int(environ.get('REG_NUM_RANDOM_RANGE')) if environ.get('REG_NUM_RANDOM_RANGE') else 9999999
 	SIMULATE_REQUEST = int(environ.get('SIMULATE_REQUEST')) if environ.get('SIMULATE_REQUEST') else 1
+	USE_SERIAL_DEVICE = int(environ.get('USE_SERIAL_DEVICE')) if environ.get('USE_SERIAL_DEVICE') else 1

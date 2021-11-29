@@ -7,10 +7,14 @@ from main.config import Config
 def check_car_presence(park_type = "entrance"):
 	state = False
 	try:
-		r = requests.get(f"{Config.IOT_DEVICE_URL}/check-car-presence/?device_key={Config.IOT_DEVICE_KEY}&type={park_type}")
-		state = False if int(r.text()) == 0 else True
-		ttt = r.text()
-		print(ttt, " +++++ ", state)
+		if Config.USE_SERIAL_DEVICE:
+			return
+
+		else:
+			r = requests.get(f"{Config.IOT_DEVICE_URL}/check-car-presence/?device_key={Config.IOT_DEVICE_KEY}&type={park_type}")
+			state = False if int(r.text()) == 0 else True
+			ttt = r.text()
+			print(ttt, " +++++ ", state)
 
 	except Exception as ex:
 		print(f"--clearparking--: {datetime.now()} | check_car_presence exception: {ex}")
@@ -20,9 +24,13 @@ def check_car_presence(park_type = "entrance"):
 
 def open_gates(park_type = "entrance", direction = "up"):
 	try:
-		r = requests.get(f"{Config.IOT_DEVICE_URL}/control/?device_key={Config.IOT_DEVICE_KEY}&type={park_type}&direction={direction}")
-		ttt = r.text()
-		print(ttt, " \/////////")
+		if Config.USE_SERIAL_DEVICE:
+			return
+
+		else:
+			r = requests.get(f"{Config.IOT_DEVICE_URL}/control/?device_key={Config.IOT_DEVICE_KEY}&type={park_type}&direction={direction}")
+			ttt = r.text()
+			print(ttt, " \/////////")
 
 	except Exception as ex:
 		print(f"--clearparking--: {datetime.now()} | open_gates exception: {ex}")
