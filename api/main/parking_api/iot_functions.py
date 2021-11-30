@@ -2,12 +2,14 @@ import requests
 from datetime import datetime
 
 from main.config import Config
+from main.parking_api.serial_device_functions import serial_car_presence, serial_open_gates
 
 
 def check_car_presence(park_type = "entrance"):
 	state = False
 	try:
 		if Config.USE_SERIAL_DEVICE:
+			res = serial_car_presence()
 			return
 
 		else:
@@ -25,6 +27,7 @@ def check_car_presence(park_type = "entrance"):
 def open_gates(park_type = "entrance", direction = "up"):
 	try:
 		if Config.USE_SERIAL_DEVICE:
+			res = serial_open_gates()
 			return
 
 		else:

@@ -1,6 +1,4 @@
 import sys
-import redis
-import json
 from os import environ, path
 from dotenv import load_dotenv
 
@@ -46,4 +44,9 @@ class Config:
 	IOT_RESOURCE_GUID = environ.get('IOT_RESOURCE_GUID')
 	REG_NUM_RANDOM_RANGE = int(environ.get('REG_NUM_RANDOM_RANGE')) if environ.get('REG_NUM_RANDOM_RANGE') else 9999999
 	SIMULATE_REQUEST = int(environ.get('SIMULATE_REQUEST')) if environ.get('SIMULATE_REQUEST') else 1
+
 	USE_SERIAL_DEVICE = int(environ.get('USE_SERIAL_DEVICE')) if environ.get('USE_SERIAL_DEVICE') else 1
+	SERIAL_DEVICE_CONTROL_APP_PATH = environ.get('SERIAL_DEVICE_CONTROL_APP_PATH') or 'bin/app'
+	SERIAL_BAUDRATE = int(environ.get('SERIAL_BAUDRATE')) if environ.get('SERIAL_BAUDRATE') else 115200
+	SERIAL_PORT = environ.get('SERIAL_PORT') or "/dev/ttyUSB0"
+	SERIAL_DEVICE_APP_EXECUTION_COMMAND = f"{path.join(basedir, SERIAL_DEVICE_CONTROL_APP_PATH)} -b={SERIAL_BAUDRATE} -p={SERIAL_PORT}"
