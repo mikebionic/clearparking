@@ -13,6 +13,7 @@ from .Acc_type import *
 from .Accounting_info import *
 from .AdditionalInf import *
 from .App_release import *
+from .Attendance import *
 from .Award import *
 from .Bank import *
 from .Barcode import *
