@@ -1,27 +1,32 @@
 int entrance_sensor_1 = 8;
+int entrance_sensor_2 = 9;
+int entrance_sensor_3 = 10;
+
 int entrance_relay = 13;
-int val_entrance_sensor_1;
-int val_entrance_sensor_3 = 1;
+
+int val_entrance_sensor_1=0;
+int val_entrance_sensor_2=0;
+int val_entrance_sensor_3=0;
+
+int counter = 0;
 
 bool gate_state = false;
 
+unsigned long close_door = 0;
 unsigned long previous_millis = 0;
-String data;
 
+String data;
 
 void setup() {
   Serial.begin(115200);
   pinMode(entrance_sensor_1, INPUT);
+  pinMode(entrance_sensor_2, INPUT);
+  pinMode(entrance_sensor_3, INPUT);
   pinMode(entrance_relay, OUTPUT);
 }
 
 void loop() {
-  //values of sensors
-  if (millis() - previous_millis >= 500) {
-    previous_millis = millis();
-    val_entrance_sensor_1 = digitalRead(entrance_sensor_1);
-    Serial.println("val_ent_1:" + String(val_entrance_sensor_1) + ":val_ent_2:" + String(val_entrance_sensor_1));
-  }
+    check_car_presence();
   if (Serial.available() != 0) {
     String data = Serial.readStringUntil('\n');
     data.trim();
@@ -29,10 +34,35 @@ void loop() {
       gate_management(data);
     }
   }
-//  if (gate_state == true and val_entrance_sensor_1 == 0  and val_entrance_sensor_3 == 0) {
-//    Serial.println("Close Door");
-//    gate_state = false;
-//  }
+  close_gates();
+}
+
+void close_gates() {
+  if (millis() - close_door >= 1000 and gate_state == true) {
+    close_door = millis();
+    counter += 1;
+    if (val_entrance_sensor_2 == 1 and val_entrance_sensor_3 == 1 and counter == 6) {
+      pinMode(entrance_relay, HIGH);
+      counter = 0;
+      gate_state = false;
+      Serial.println("U did it");
+    }
+  }
+}
+
+void check_car_presence() {
+  if (millis() - previous_millis >= 500) {
+    previous_millis = millis();
+    val_entrance_sensor_1 = digitalRead(entrance_sensor_1);
+    val_entrance_sensor_2 = digitalRead(entrance_sensor_2);
+    val_entrance_sensor_3 = digitalRead(entrance_sensor_3);
+    if (val_entrance_sensor_1 == 0 and val_entrance_sensor_2 == 0) {
+      Serial.println(1);
+    }
+    else {
+      Serial.println(0);
+    }
+  }
 }
 
 void gate_management(String data) {
@@ -45,7 +75,6 @@ void gate_management(String data) {
     Serial.println("OK");
     pinMode(entrance_relay, LOW);
   } else {
-    Serial.println("Error Here is No Car");
     pinMode(entrance_relay, HIGH);
   }
 }
