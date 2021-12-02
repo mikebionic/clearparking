@@ -12,6 +12,9 @@ There should be a user (Rp_acc) with it's registered Device (qr-code), and Rp_ac
 In the entrance, scanner scans the QR-code and finds a Device and its Rp_acc, it records the Attendance AttStartDate, Specify it by AttTypeId.
 In the exit, scanner scans the QR and records the Attendance AttEndDate, then calculates the Whole time spent or used by Resource and returns its price.
 
+------
+> Note! It supports saphasap and akhsasap! Just switch the DB_STRUCTURE in .env file
+
 ------ 
 in case if you don't have attendance table:
 ```sql

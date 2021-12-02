@@ -2,9 +2,9 @@
 from sqlalchemy.orm import joinedload
 import uuid
 from datetime import datetime
-from main.models.Rp_acc_trans_total import Rp_acc_trans_total
+from main.models import Rp_acc_trans_total
 from main.api.common.fetch_and_generate_RegNo import fetch_and_generate_RegNo
-from main.models.User import User
+from main.models import User
 from main import db
 
 

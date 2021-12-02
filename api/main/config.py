@@ -16,6 +16,7 @@ class Config:
 	APP_PORT = int(environ.get('APP_PORT')) if environ.get('APP_PORT') else 5000
 	APP_HOST = environ.get('APP_HOST') or "0.0.0.0"
 
+	DB_STRUCTURE = environ.get('DB_STRUCTURE') or 'saphasap'
 	DB_TYPE = environ.get('DB_TYPE') or 'postgres'
 	DB_URI_DATA = {
 		'user': environ.get('DB_USERNAME'),

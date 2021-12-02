@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 import random
 
-from main.models.Attendance import Attendance
+from main.models import Attendance
 from main import db
 
 
