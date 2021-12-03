@@ -30,8 +30,6 @@ def get_att_type_id(type_name):
 
 def record_park_time(rp_acc_model, device_model, park_type = "entrance"):
 	data, message = {}, ""
-	# this could return info about last insertion to use to calculate invoice
-	print("Here should be an insertion to attendance table")
 
 	this_att_data = {
 		"AttId": random.randint(1,1009990),
