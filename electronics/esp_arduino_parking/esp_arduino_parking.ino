@@ -4,9 +4,9 @@ int entrance_sensor_3 = 10;
 
 int entrance_relay = 13;
 
-int val_entrance_sensor_1=0;
-int val_entrance_sensor_2=0;
-int val_entrance_sensor_3=0;
+int val_entrance_sensor_1;
+int val_entrance_sensor_2;
+int val_entrance_sensor_3;
 
 int counter = 0;
 
@@ -26,7 +26,7 @@ void setup() {
 }
 
 void loop() {
-    check_car_presence();
+  check_car_presence();
   if (Serial.available() != 0) {
     String data = Serial.readStringUntil('\n');
     data.trim();
@@ -38,15 +38,18 @@ void loop() {
 }
 
 void close_gates() {
-  if (millis() - close_door >= 1000 and gate_state == true) {
+  if (counter == 6) {
+    Serial.println("You did it");
+    gate_state = false;
+    counter = 0;
+  }
+  if (millis() - close_door >= 1000 and gate_state == true and val_entrance_sensor_2 == 1 and val_entrance_sensor_3 == 1) {
     close_door = millis();
-    counter += 1;
-    if (val_entrance_sensor_2 == 1 and val_entrance_sensor_3 == 1 and counter == 6) {
-      pinMode(entrance_relay, HIGH);
-      counter = 0;
-      gate_state = false;
-      Serial.println("U did it");
-    }
+    Serial.println(counter);
+    counter++;
+  }
+  if (val_entrance_sensor_3 == 0 or val_entrance_sensor_2 == 0) {
+    counter = 0;
   }
 }
 
@@ -56,6 +59,7 @@ void check_car_presence() {
     val_entrance_sensor_1 = digitalRead(entrance_sensor_1);
     val_entrance_sensor_2 = digitalRead(entrance_sensor_2);
     val_entrance_sensor_3 = digitalRead(entrance_sensor_3);
+    Serial.println("sens1:" + String(val_entrance_sensor_1) + " sens2:" + String(val_entrance_sensor_2) + " sens3:" + String(val_entrance_sensor_3));
     if (val_entrance_sensor_1 == 0 and val_entrance_sensor_2 == 0) {
       Serial.println(1);
     }
@@ -72,7 +76,7 @@ void gate_management(String data) {
   Serial.println(gate_type + " " + gate_direction);
   if (gate_type == "entrance" && gate_direction == "up") {
     gate_state = true;
-    Serial.println("OK");
+    counter = 0;
     pinMode(entrance_relay, LOW);
   } else {
     pinMode(entrance_relay, HIGH);
