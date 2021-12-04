@@ -1,9 +1,9 @@
 from flask import request, make_response
 from datetime import datetime
+from api.main.parking_api.sap_db_utils import smth
 
 from main import app
 from main.config import Config
-from main.models import Device
 from main.parking_api.iot_functions import manage_iot_device
 from main.parking_api.record_park_time import record_park_time
 from main.parking_api.checkout_invoice import checkout_invoice
@@ -20,17 +20,9 @@ def find_device():
 		req = request.get_json()
 		DevUniqueId = req.get("data")
 
-		this_device = Device.query.filter_by(DevUniqueId = DevUniqueId).first()
-		if not this_device:
-			print(f"--clearparking--: {datetime.now()} | Device not found {DevUniqueId}")
-			raise Exception
-
-		if not this_device.rp_acc:
-			print(f"--clearparking--: {datetime.now()} | Device doesn't have an Rp_acc")
-
-		this_rp_acc = this_device.rp_acc
-		data = this_rp_acc.to_json_api()
-		data["Device"] = this_device.to_json_api()
+		data, message = smth()
+		if not data:
+			print(f"--clearparking--: {datetime.now()} | {message}")
 
 		att_data, _ = record_park_time(this_rp_acc, this_device, park_type)
 		if not att_data:
