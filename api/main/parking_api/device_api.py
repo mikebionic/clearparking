@@ -8,10 +8,10 @@ from main.parking_api.checkout_invoice import checkout_invoice
 from main.parking_api.iot_sha_required import iot_sha_required
 
 if Config.DB_STRUCTURE == "akhasap":
-	from api.main.parking_api.ak_db_utils import device_find_request
+	from main.parking_api.ak_db_utils import device_find_request
 	from main.parking_api.record_park_time import ak_record_park_time as record_park_time
 else:
-	from api.main.parking_api.sap_db_utils import device_find_request
+	from main.parking_api.sap_db_utils import device_find_request
 	from main.parking_api.record_park_time import sap_record_park_time as record_park_time
 
 

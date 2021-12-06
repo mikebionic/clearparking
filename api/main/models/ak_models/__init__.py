@@ -8,3 +8,4 @@ from .Res_price import *
 from .Resource import *
 from .Rp_acc_trans_total import *
 from .Rp_acc import *
+from .User import *

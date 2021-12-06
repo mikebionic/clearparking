@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime
-from main.api.common.fetch_and_generate_RegNo import fetch_and_generate_RegNo
 from main import db
 
 from main.models import (
@@ -13,8 +12,11 @@ from main.models import (
 	User,
 )
 from main.config import Config
+if Config.DB_STRUCTURE == "saphasap":
+	from main.api.common.fetch_and_generate_RegNo import fetch_and_generate_RegNo
 
-def sap_checkout_invoice(data, att_data):
+
+def checkout_invoice(data, att_data):
 	try:
 		entered_attendace = Attendance.query\
 			.filter_by(
@@ -44,11 +46,15 @@ def sap_checkout_invoice(data, att_data):
 			print(f"Calculate attendance price exception amount: {amount} and price: {total_price}")
 			raise Exception
 
-		InvRegNo, _ = fetch_and_generate_RegNo(
-			main_user.UId,
-			main_user.UShortName,
-			'sale_invoice_code',
-		)
+		if Config.DB_STRUCTURE == "saphasap":
+			InvRegNo, _ = fetch_and_generate_RegNo(
+				main_user.UId,
+				main_user.UShortName,
+				'sale_invoice_code',
+			)
+		else:
+			InvRegNo = str(datetime.now().timestamp())
+
 		this_invoice_data = {
 			"InvGuid": uuid.uuid4(),
 			"RpAccId": data["RpAccId"],
@@ -60,11 +66,15 @@ def sap_checkout_invoice(data, att_data):
 		db.session.add(this_invoice)
 		db.session.commit()
 
-		InvLineRegNo, _ = fetch_and_generate_RegNo(
-			main_user.UId,
-			main_user.UShortName,
-			'invoice_line_code',
-		)
+		if Config.DB_STRUCTURE == "saphasap":
+			InvLineRegNo, _ = fetch_and_generate_RegNo(
+				main_user.UId,
+				main_user.UShortName,
+				'invoice_line_code',
+			)
+		else:
+			InvLineRegNo = str(datetime.now().timestamp())
+
 		this_inv_line_data = {
 			"InvLineGuid": uuid.uuid4(),
 			"ResId": resource.ResId,
