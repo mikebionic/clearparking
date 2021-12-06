@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from main.models import Device
 
 def device_find_request(DevUniqueId):
@@ -15,6 +13,7 @@ def device_find_request(DevUniqueId):
 		this_rp_acc = this_device.rp_acc
 		data = this_rp_acc.to_json_api()
 		data["DevUniqueId"] = this_device.DevUniqueId
+		data["DevId"] = this_device.DevId
 
 	except:
 		pass

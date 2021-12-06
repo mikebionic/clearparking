@@ -10,6 +10,7 @@ def check_car_presence(park_type = "entrance"):
 	try:
 		if Config.USE_SERIAL_DEVICE:
 			res = serial_car_presence()
+			print("++++++ serial response = ", {res})
 			return
 
 		else:

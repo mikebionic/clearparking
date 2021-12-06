@@ -1,13 +1,18 @@
 from flask import request, make_response
 from datetime import datetime
-from api.main.parking_api.sap_db_utils import smth
 
 from main import app
 from main.config import Config
 from main.parking_api.iot_functions import manage_iot_device
-from main.parking_api.record_park_time import record_park_time
 from main.parking_api.checkout_invoice import checkout_invoice
 from main.parking_api.iot_sha_required import iot_sha_required
+
+if Config.DB_STRUCTURE == "akhasap":
+	from api.main.parking_api.ak_db_utils import device_find_request
+	from main.parking_api.record_park_time import ak_record_park_time as record_park_time
+else:
+	from api.main.parking_api.sap_db_utils import device_find_request
+	from main.parking_api.record_park_time import sap_record_park_time as record_park_time
 
 
 @app.route("/find-device/", methods=["POST"])
@@ -20,17 +25,17 @@ def find_device():
 		req = request.get_json()
 		DevUniqueId = req.get("data")
 
-		data, message = smth()
+		data, message = device_find_request(DevUniqueId)
 		if not data:
 			print(f"--clearparking--: {datetime.now()} | {message}")
 
-		att_data, _ = record_park_time(this_rp_acc, this_device, park_type)
+		att_data, _ = record_park_time(data, park_type)
 		if not att_data:
 			print("Attendance not recorded...")
 			raise Exception
 
 		if park_type == "exit":
-			if checkout_invoice(this_rp_acc, att_data):
+			if checkout_invoice(data, att_data):
 				manage_iot_device(park_type)
 		else:
 			manage_iot_device(park_type)
