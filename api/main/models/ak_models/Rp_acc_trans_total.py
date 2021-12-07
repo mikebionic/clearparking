@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from main import db
 
 class Rp_acc_trans_total(db.Model):
-	__tablename__ = "tbl_dk_rp_acc_trans_total"
+	__tablename__ = "tbl_mg_arap_total"
 	RpAccTrTotId = db.Column("arap_total_id",db.Integer,nullable=False,primary_key=True)
 	RpAccTrTotGuid = db.Column("arap_total_id_guid",UUID(as_uuid=True),unique=True)
 	RpAccId = db.Column("arap_id",db.Integer)

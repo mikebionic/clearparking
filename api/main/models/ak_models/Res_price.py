@@ -6,7 +6,7 @@ class Res_price(db.Model):
 	ResPriceTypeId = db.Column("price_type_id",db.Integer)
 	ResId = db.Column("material_id",db.Integer)
 	CurrencyId = db.Column("currency_id",db.Integer)
-	ResPriceVal = db.Column("price_value",db.Integer,nullable=False)
+	ResPriceValue= db.Column("price_value",db.Integer,nullable=False)
 	
 	def to_json_api(self):
 		data = {
@@ -14,7 +14,7 @@ class Res_price(db.Model):
 			"ResPriceTypeId": self.ResPriceTypeId,
 			"ResId": self.ResId,
 			"CurrencyId": self.CurrencyId,
-			"ResPriceVal": self.ResPriceVal,
+			"ResPriceValue": self.ResPriceValue,
 		}
 
 		return data

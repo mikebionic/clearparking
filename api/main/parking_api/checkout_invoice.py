@@ -20,9 +20,7 @@ def checkout_invoice(data, att_data):
 	try:
 		entered_attendace = Attendance.query\
 			.filter_by(
-					RpAccId = att_data["RpAccId"],
-					DevId = att_data["DevId"],
-					AttTypeId = 1
+					RpAccId = att_data["RpAccId"],				AttTypeId = 1
 				)\
 			.order_by(Attendance.AttDate.desc())\
 			.first()
@@ -31,14 +29,14 @@ def checkout_invoice(data, att_data):
 			print("Entered date not known")
 			raise Exception
 
-		main_user = User.query.filter_by(GCRecord = None).first()
+		main_user = User.query.first()
 		resource = Resource.query\
-			.filter_by(ResGuid = Config.IOT_RESOURCE_GUID, GCRecord = None)\
+			.filter_by(ResGuid = Config.IOT_RESOURCE_GUID)\
 			.first()
 
 		res_prices = Res_price.query.filter_by(ResId = resource.ResId).all()
 
-		res_prices_list = [res_price.to_json_api() for res_price in res_prices if res_price.ResPriceTypeId == 2 and not res_price.GCRecord]
+		res_prices_list = [res_price.to_json_api() for res_price in res_prices if res_price.ResPriceTypeId == 2]
 		resource_price = res_prices_list[0]["ResPriceValue"]
 		amount, total_price = calculate_attendance_price(entered_attendace.AttDate, att_data["AttDate"], resource_price)
 
@@ -61,6 +59,7 @@ def checkout_invoice(data, att_data):
 			"InvRegNo": InvRegNo,
 			"InvTotal": total_price,
 			"InvFTotal": total_price,
+			"InvTypeId": 8,
 		}
 		this_invoice = Invoice(**this_invoice_data)
 		db.session.add(this_invoice)
@@ -97,7 +96,7 @@ def checkout_invoice(data, att_data):
 			db.session.add(new_rp_acc_tr_total)
 
 		else:
-			trans_totals[0].RpAccTrTotDebit += total_price
+			trans_totals[0].RpAccTrTotDebit += float(total_price)
 
 		db.session.commit()
 

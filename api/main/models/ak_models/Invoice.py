@@ -8,6 +8,7 @@ from main.base.dataMethods import configureFloat, apiDataFormat
 
 class Invoice(db.Model):
 	__tablename__ = "tbl_mg_fich"
+	__table_args__ = {'implicit_returning': False}
 	InvId = db.Column("fich_id",db.Integer,nullable=False,primary_key=True)
 	InvGuid = db.Column("fich_id_guid",UUID(as_uuid=True),unique=True)
 	InvTypeId = db.Column("fich_type_id",db.Integer)
@@ -21,7 +22,6 @@ class Invoice(db.Model):
 	InvTotal = db.Column("fich_total",db.Float)
 	InvDiscountAmount = db.Column("fich_discount",db.Float,default=0.0)
 	InvFTotal = db.Column("fich_nettotal",db.Float,default=0.0)
-	InvFTotalInWrite = db.Column("inv_nettotal_text",db.String(100),default=0)
 
 	def to_json_api(self):
 		data = {

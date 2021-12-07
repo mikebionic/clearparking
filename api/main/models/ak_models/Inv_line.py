@@ -5,6 +5,7 @@ from main import db
 
 class Inv_line(db.Model):
 	__tablename__ = "tbl_mg_fich_line"
+	__table_args__ = {'implicit_returning': False}
 	InvLineId = db.Column("fich_line_id",db.Integer,nullable=False,primary_key=True)
 	InvLineGuid = db.Column("fich_line_id_guid",UUID(as_uuid=True),unique=True)
 	InvId = db.Column("fich_id",db.Integer)

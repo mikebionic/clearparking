@@ -29,7 +29,7 @@ def get_att_type_id(type_name):
 
 
 def sap_record_park_time(data, park_type = "entrance"):
-	data, message = {}, ""
+	att_data, message = {}, ""
 
 	this_att_data = {
 		"AttId": random.randint(1,1009990),
@@ -43,12 +43,12 @@ def sap_record_park_time(data, park_type = "entrance"):
 	this_attendance = Attendance(**this_att_data)
 	db.session.add(this_attendance)
 	db.session.commit()
-	data = this_attendance.to_json_api()
-	return data, message
+	att_data= this_attendance.to_json_api()
+	return att_data, message
 
 
 def ak_record_park_time(data, park_type = "entrance"):
-	data, message = {}, ""
+	att_data, message = {}, ""
 
 	this_att_data = {
 		"AttId": random.randint(1,1009990),
@@ -60,5 +60,5 @@ def ak_record_park_time(data, park_type = "entrance"):
 	this_attendance = Attendance(**this_att_data)
 	db.session.add(this_attendance)
 	db.session.commit()
-	data = this_attendance.to_json_api()
-	return data, message
+	att_data= this_attendance.to_json_api()
+	return att_data, message
