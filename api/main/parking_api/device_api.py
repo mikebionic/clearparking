@@ -28,6 +28,7 @@ def find_device():
 		data, message = device_find_request(DevUniqueId)
 		if not data:
 			print(f"--clearparking--: {datetime.now()} | {message}")
+			raise Exception
 
 		att_data, _ = record_park_time(data, park_type)
 		if not att_data:

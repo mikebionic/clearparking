@@ -15,7 +15,7 @@ def device_find_request(DevUniqueId):
 		data["DevUniqueId"] = this_device.DevUniqueId
 		data["DevId"] = this_device.DevId
 
-	except:
-		pass
+	except Exception as ex:
+		print(f"device find request exception {ex}")
 
 	return data, message
