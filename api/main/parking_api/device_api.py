@@ -25,7 +25,7 @@ def find_device():
 		req = request.get_json()
 		DevUniqueId = req.get("data")
 
-		data, message = device_find_request(DevUniqueId)
+		data, message = device_find_request(DevUniqueId.strip())
 		if not data:
 			print(f"--clearparking--: {datetime.now()} | {message}")
 			raise Exception

@@ -20,7 +20,7 @@ def checkout_invoice(data, att_data):
 	try:
 		entered_attendace = Attendance.query\
 			.filter_by(
-					RpAccId = att_data["RpAccId"],				AttTypeId = 1
+					RpAccId = att_data["RpAccId"], AttTypeId = 1
 				)\
 			.order_by(Attendance.AttDate.desc())\
 			.first()
