@@ -20,3 +20,13 @@ def serial_open_gates(park_type = "entrance", direction = "up"):
 		print(f"serial_open_gates exception {ex}")
 
 	return os_response
+
+def serial_print_invoice(id):
+	os_response = None
+	try:
+		if Config.USE_SERIAL_PRINTER:
+			os_response = os.popen(f"{Config.SERIAL_PRINTER_EXECUTION_COMMAND} {id}").read()
+	except Exception as ex:
+		print(f"serial_print_invoice exception {ex}")
+
+	return os_response

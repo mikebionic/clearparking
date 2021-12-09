@@ -11,6 +11,8 @@ from main.models import (
 	Rp_acc_trans_total,
 	User,
 )
+from main.parking_api.serial_device_functions import serial_print_invoice
+
 from main.config import Config
 if Config.DB_STRUCTURE == "saphasap":
 	from main.api.common.fetch_and_generate_RegNo import fetch_and_generate_RegNo
@@ -99,6 +101,8 @@ def checkout_invoice(data, att_data):
 			trans_totals[0].RpAccTrTotDebit += float(total_price)
 
 		db.session.commit()
+
+		serial_print_invoice(this_invoice.InvId)
 
 	except Exception as ex:
 		print(f"++clearparking++ {datetime.now()} | checkout park invoice exception {ex}")
