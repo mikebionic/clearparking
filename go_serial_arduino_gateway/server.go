@@ -21,10 +21,12 @@ func main() {
 	}
 	switch *rwType {
 	case "read":
-		scanner := bufio.NewScanner(s)
-		for i := 0; i < 7; i++ {
-			scanner.Scan()
+		_, err := s.Write([]byte("value\n"))
+		if err != nil {
+			fmt.Println(err)
 		}
+		scanner := bufio.NewScanner(s)
+		scanner.Scan()
 		fmt.Println(scanner.Text())
 	case "writeup":
 		_, err := s.Write([]byte("type:entrance:direction:up\n"))
