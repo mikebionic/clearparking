@@ -7,7 +7,7 @@ int entrance_relay = 13;
 int val_entrance_sensor_1;
 int val_entrance_sensor_2;
 int val_entrance_sensor_3;
-
+bool ledState = false;
 int counter = 0;
 
 bool gate_state = false;
@@ -26,10 +26,12 @@ void setup() {
 }
 
 void loop() {
-  check_car_presence();
   if (Serial.available() != 0) {
     String data = Serial.readStringUntil('\n');
     data.trim();
+    if (data == "value") {
+      check_car_presence();
+    }
     if (data.length() > 15) {
       gate_management(data);
     }
