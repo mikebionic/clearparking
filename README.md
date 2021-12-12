@@ -174,3 +174,7 @@ urlParams: device_key={secret_key_of_device_in_env}
   "message": "Info"
 }
 ```
+
+-------
+
+NOTE! If you are using Akhasap schema, disable the triggers in "tbl_mg_arap_attandence" table
