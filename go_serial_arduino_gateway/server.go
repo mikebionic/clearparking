@@ -19,6 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(*rwType)
 	switch *rwType {
 	case "read":
 		_, err := s.Write([]byte("value\n"))
@@ -31,16 +32,27 @@ func main() {
 			s.Close()
 		}
 		fmt.Println(scanner.Text())
-	case "writeup":
+	case "write":
 		_, err := s.Write([]byte("type:entrance:direction:up\n"))
 		if err != nil {
 			log.Fatal(err)
 		}
-	case "writedown":
-		_, err := s.Write([]byte("type:entrance:direction:down\n"))
-		if err != nil {
-			log.Fatal(err)
+		scanner := bufio.NewScanner(s)
+		scanner.Scan()
+		if scanner.Text() == "" {
+			s.Close()
 		}
+		fmt.Println(scanner.Text())
+		scanner.Scan()
+		if scanner.Text() == "" {
+			s.Close()
+		}
+		fmt.Println(scanner.Text())
+		scanner.Scan()
+		if scanner.Text() == "" {
+			s.Close()
+		}
+		fmt.Println(scanner.Text())
 	}
 	s.Close()
 }
