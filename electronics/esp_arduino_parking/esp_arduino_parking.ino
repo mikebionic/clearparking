@@ -2,7 +2,7 @@ int entrance_sensor_1 = 8;
 int entrance_sensor_2 = 9;
 int entrance_sensor_3 = 10;
 
-int entrance_relay = 13;
+int entrance_relay = 6;
 
 int val_entrance_sensor_1;
 int val_entrance_sensor_2;
@@ -48,13 +48,11 @@ void measure() {
 void close_gates() {
   if (counter == 6) {
     gate_state = false;
-    Serial.println("You Did");
     digitalWrite(entrance_relay, LOW);
     counter = 0;
   }
   if (millis() - close_door >= 1000 and gate_state == true and val_entrance_sensor_2 == 1 and val_entrance_sensor_3 == 1) {
     close_door = millis();
-    Serial.println(counter);
     counter++;
   }
   if (val_entrance_sensor_3 == 0 or val_entrance_sensor_2 == 0) {
@@ -75,7 +73,14 @@ void gate_management(String data) {
   //type:entrance:direction:up
   String gate_type = getValue(data, ':', 1);
   String gate_direction = getValue(data, ':', 3);
+  if (gate_type == "entrance") {
+    Serial.println("1stOK");
+  }
+  if (gate_direction == "up") {
+    Serial.println("2ndOK");
+  }
   if (gate_type == "entrance" && gate_direction == "up") {
+    Serial.println("LedOn");
     gate_state = true;
     counter = 0;
     digitalWrite(entrance_relay, HIGH);
