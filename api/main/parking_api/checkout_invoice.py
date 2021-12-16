@@ -1,24 +1,28 @@
-
-from sqlalchemy.orm import joinedload
 import uuid
 from datetime import datetime
-from main.models.Rp_acc_trans_total import Rp_acc_trans_total
-from main.api.common.fetch_and_generate_RegNo import fetch_and_generate_RegNo
-from main.models.User import User
 from main import db
 
+from main.models import (
+	Invoice,
+	Inv_line,
+	Resource,
+	Attendance,
+	Res_price,
+	Rp_acc_trans_total,
+	User,
+)
+from main.parking_api.serial_device_functions import serial_print_invoice
 
-from main.models import Invoice, Inv_line, Resource, Attendance
 from main.config import Config
+if Config.DB_STRUCTURE == "saphasap":
+	from main.api.common.fetch_and_generate_RegNo import fetch_and_generate_RegNo
 
 
-def checkout_invoice(rp_acc_model, att_data):
+def checkout_invoice(data, att_data):
 	try:
 		entered_attendace = Attendance.query\
 			.filter_by(
-					RpAccId = att_data["RpAccId"],
-					DevId = att_data["DevId"],
-					AttTypeId = 1
+					RpAccId = att_data["RpAccId"], AttTypeId = 1
 				)\
 			.order_by(Attendance.AttDate.desc())\
 			.first()
@@ -27,15 +31,14 @@ def checkout_invoice(rp_acc_model, att_data):
 			print("Entered date not known")
 			raise Exception
 
-		main_user = User.query.filter_by(UTypeId = 1, GCRecord = None).first()
+		main_user = User.query.first()
 		resource = Resource.query\
-			.filter_by(ResGuid = Config.IOT_RESOURCE_GUID, GCRecord = None)\
-			.options(
-				joinedload(Resource.Res_price)
-			)\
+			.filter_by(ResGuid = Config.IOT_RESOURCE_GUID)\
 			.first()
 
-		res_prices_list = [res_price.to_json_api() for res_price in resource.Res_price if res_price.ResPriceTypeId == 2 and not res_price.GCRecord]
+		res_prices = Res_price.query.filter_by(ResId = resource.ResId).all()
+
+		res_prices_list = [res_price.to_json_api() for res_price in res_prices if res_price.ResPriceTypeId == 2]
 		resource_price = res_prices_list[0]["ResPriceValue"]
 		amount, total_price = calculate_attendance_price(entered_attendace.AttDate, att_data["AttDate"], resource_price)
 
@@ -43,32 +46,41 @@ def checkout_invoice(rp_acc_model, att_data):
 			print(f"Calculate attendance price exception amount: {amount} and price: {total_price}")
 			raise Exception
 
-		InvRegNo, _ = fetch_and_generate_RegNo(
-			main_user.UId,
-			main_user.UShortName,
-			'sale_invoice_code',
-		)
+		if Config.DB_STRUCTURE == "saphasap":
+			InvRegNo, _ = fetch_and_generate_RegNo(
+				main_user.UId,
+				main_user.UShortName,
+				'sale_invoice_code',
+			)
+		else:
+			InvRegNo = str(datetime.now().timestamp())
+
 		this_invoice_data = {
 			"InvGuid": uuid.uuid4(),
-			"RpAccId": rp_acc_model.RpAccId,
+			"RpAccId": data["RpAccId"],
 			"InvRegNo": InvRegNo,
 			"InvTotal": total_price,
 			"InvFTotal": total_price,
+			"InvTypeId": 8,
 		}
 		this_invoice = Invoice(**this_invoice_data)
 		db.session.add(this_invoice)
 		db.session.commit()
-		
-		InvLineRegNo, _ = fetch_and_generate_RegNo(
-			main_user.UId,
-			main_user.UShortName,
-			'invoice_line_code',
-		)
+
+		if Config.DB_STRUCTURE == "saphasap":
+			InvLineRegNo, _ = fetch_and_generate_RegNo(
+				main_user.UId,
+				main_user.UShortName,
+				'invoice_line_code',
+			)
+		else:
+			InvLineRegNo = str(datetime.now().timestamp())
+
 		this_inv_line_data = {
 			"InvLineGuid": uuid.uuid4(),
 			"ResId": resource.ResId,
 			"InvId": this_invoice.InvId,
-			"InvLineRegNo": InvLineRegNo,		
+			"InvLineRegNo": InvLineRegNo,
 			"InvLinePrice": resource_price,
 			"InvLineTotal": total_price,
 			"InvLineFTotal": total_price,
@@ -76,18 +88,21 @@ def checkout_invoice(rp_acc_model, att_data):
 		}
 		this_inv_line = Inv_line(**this_inv_line_data)
 		db.session.add(this_inv_line)
-		
-		if not rp_acc_model.Rp_acc_trans_total:
+
+		trans_totals = Rp_acc_trans_total.query.filter_by(RpAccId = data["RpAccId"]).all()
+		if not trans_totals:
 			new_rp_acc_tr_total = Rp_acc_trans_total(
-				RpAccId = rp_acc_model.RpAccId,
+				RpAccId = data["RpAccId"],
 				RpAccTrTotDebit = total_price
 			)
 			db.session.add(new_rp_acc_tr_total)
-		
+
 		else:
-			rp_acc_model.Rp_acc_trans_total[0].RpAccTrTotDebit += total_price
+			trans_totals[0].RpAccTrTotDebit += float(total_price)
+
 		db.session.commit()
-		print(rp_acc_model.RpAccId)
+
+		serial_print_invoice(this_invoice.InvId)
 
 	except Exception as ex:
 		print(f"++clearparking++ {datetime.now()} | checkout park invoice exception {ex}")

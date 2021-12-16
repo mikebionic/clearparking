@@ -16,6 +16,7 @@ class Config:
 	APP_PORT = int(environ.get('APP_PORT')) if environ.get('APP_PORT') else 5000
 	APP_HOST = environ.get('APP_HOST') or "0.0.0.0"
 
+	DB_STRUCTURE = environ.get('DB_STRUCTURE') or 'saphasap'
 	DB_TYPE = environ.get('DB_TYPE') or 'postgres'
 	DB_URI_DATA = {
 		'user': environ.get('DB_USERNAME'),
@@ -50,3 +51,9 @@ class Config:
 	SERIAL_BAUDRATE = int(environ.get('SERIAL_BAUDRATE')) if environ.get('SERIAL_BAUDRATE') else 115200
 	SERIAL_PORT = environ.get('SERIAL_PORT') or "/dev/ttyUSB0"
 	SERIAL_DEVICE_APP_EXECUTION_COMMAND = f"{path.join(basedir, SERIAL_DEVICE_CONTROL_APP_PATH)} -b={SERIAL_BAUDRATE} -p={SERIAL_PORT}"
+
+	USE_SERIAL_PRINTER = int(environ.get('USE_SERIAL_PRINTER')) if environ.get('USE_SERIAL_PRINTER') else 1
+	SERIAL_PRINTER_CONTROL_APP_PATH = environ.get('SERIAL_PRINTER_CONTROL_APP_PATH') or 'bin/printer'
+	SERIAL_PRINTER_EXECUTION_COMMAND = f"{path.join(basedir, SERIAL_PRINTER_CONTROL_APP_PATH)}"
+	print(SERIAL_PRINTER_EXECUTION_COMMAND)
+	print(SERIAL_DEVICE_APP_EXECUTION_COMMAND)

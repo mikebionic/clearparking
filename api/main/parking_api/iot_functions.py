@@ -10,7 +10,9 @@ def check_car_presence(park_type = "entrance"):
 	try:
 		if Config.USE_SERIAL_DEVICE:
 			res = serial_car_presence()
-			return
+			res = int(res.replace('\n', '').strip())
+			print("++++++ serial response = ", res)
+			state = False if res == 0 else True
 
 		else:
 			r = requests.get(f"{Config.IOT_DEVICE_URL}/check-car-presence/?device_key={Config.IOT_DEVICE_KEY}&type={park_type}")
@@ -28,7 +30,7 @@ def open_gates(park_type = "entrance", direction = "up"):
 	try:
 		if Config.USE_SERIAL_DEVICE:
 			res = serial_open_gates()
-			return
+			return True
 
 		else:
 			r = requests.get(f"{Config.IOT_DEVICE_URL}/control/?device_key={Config.IOT_DEVICE_KEY}&type={park_type}&direction={direction}")
@@ -52,8 +54,8 @@ def manage_iot_device(park_type = "entrance"):
 		else:
 			print(f"++clearparking++: {datetime.now()} | Unable to open gates of {park_type}")
 
-	if open_gates(park_type):
-		print(f"++clearparking++: {datetime.now()} | Opening Gates of {park_type}")
+	# if open_gates(park_type):
+	# 	print(f"++clearparking++: {datetime.now()} | ANYWAYS Opening Gates of {park_type}")
 
 	else:
 		print(f"--clearparking--: {datetime.now()} | Car is not on the road..")
