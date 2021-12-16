@@ -32,7 +32,7 @@ func main() {
 			s.Close()
 		}
 		fmt.Println(scanner.Text())
-	case "write":
+	case "writeup":
 		_, err := s.Write([]byte("type:entrance:direction:up\n"))
 		if err != nil {
 			log.Fatal(err)
