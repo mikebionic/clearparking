@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(*rwType)
+	// fmt.Println(*rwType)
 	switch *rwType {
 	case "read":
 		_, err := s.Write([]byte("value\n"))

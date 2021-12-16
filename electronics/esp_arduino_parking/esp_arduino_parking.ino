@@ -45,6 +45,7 @@ void measure() {
   val_entrance_sensor_2 = digitalRead(entrance_sensor_2);
   val_entrance_sensor_3 = digitalRead(entrance_sensor_3);
 }
+
 void close_gates() {
   if (counter == 6) {
     gate_state = false;
