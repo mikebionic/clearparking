@@ -3,7 +3,7 @@ from datetime import datetime
 
 from main import app
 from main.config import Config
-from main.parking_api.iot_functions import manage_iot_device
+from main.parking_api.iot_functions import check_car_presence, manage_iot_device
 from main.parking_api.checkout_invoice import checkout_invoice
 from main.parking_api.iot_sha_required import iot_sha_required
 
@@ -36,8 +36,9 @@ def find_device():
 			raise Exception
 
 		if park_type == "exit":
-			if checkout_invoice(data, att_data):
-				manage_iot_device(park_type)
+			if check_car_presence(park_type):
+				if checkout_invoice(data, att_data):
+					manage_iot_device(park_type)
 		else:
 			manage_iot_device(park_type)
 

@@ -59,5 +59,5 @@ def manage_iot_device(park_type = "entrance"):
 
 	else:
 		print(f"--clearparking--: {datetime.now()} | Car is not on the road..")
-	
+
 	return
