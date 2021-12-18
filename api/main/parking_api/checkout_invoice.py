@@ -72,10 +72,9 @@ def checkout_invoice(data, att_data):
 
 		if Config.DB_STRUCTURE == "akhasap":
 			this_invoice_fich = InvoiceFich(**this_invoice_data)
-			this_invoice_fich["InvId"] = this_invoice.InvId
 			db.session.add(this_invoice_fich)
 			db.session.commit()
-			
+			this_invoice_fich.InvId = this_invoice.InvId
 			this_invoice.FichId = this_invoice_fich.FichId
 			db.session.commit()
 

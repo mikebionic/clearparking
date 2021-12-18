@@ -8,7 +8,8 @@ class Inv_line(db.Model):
 	__table_args__ = {'implicit_returning': False}
 	InvLineId = db.Column("fich_line_id",db.Integer,nullable=False,primary_key=True)
 	InvLineGuid = db.Column("fich_line_id_guid",UUID(as_uuid=True),unique=True)
-	InvId = db.Column("fich_id",db.Integer)
+	InvId = db.Column("inv_id",db.Integer)
+	FichId = db.Column("fich_id",db.Integer)
 	UnitId = db.Column("unit_det_id",db.Integer)
 	ResId = db.Column("material_id",db.Integer)
 	InvLineRegNo = db.Column("spe_code",db.String(100))
