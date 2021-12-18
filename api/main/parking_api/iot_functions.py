@@ -7,6 +7,9 @@ from main.parking_api.serial_device_functions import serial_car_presence, serial
 
 def check_car_presence(park_type = "entrance"):
 	state = False
+	if Config.SIMULATE_REQUEST:
+		return True
+
 	try:
 		if Config.USE_SERIAL_DEVICE:
 			res = serial_car_presence()
@@ -45,8 +48,6 @@ def open_gates(park_type = "entrance", direction = "up"):
 
 
 def manage_iot_device(park_type = "entrance"):
-	if Config.SIMULATE_REQUEST:
-		return
 
 	if check_car_presence(park_type):
 		if open_gates(park_type):

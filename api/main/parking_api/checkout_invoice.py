@@ -17,6 +17,9 @@ from main.config import Config
 if Config.DB_STRUCTURE == "saphasap":
 	from main.api.common.fetch_and_generate_RegNo import fetch_and_generate_RegNo
 
+if Config.DB_STRUCTURE == "akhasap":
+	from main.models import InvoiceFich
+
 
 def checkout_invoice(data, att_data):
 	try:
@@ -67,6 +70,16 @@ def checkout_invoice(data, att_data):
 		db.session.add(this_invoice)
 		db.session.commit()
 
+		if Config.DB_STRUCTURE == "akhasap":
+			this_invoice_fich = InvoiceFich(**this_invoice_data)
+			this_invoice_fich["InvId"] = this_invoice.InvId
+			db.session.add(this_invoice_fich)
+			db.session.commit()
+			
+			this_invoice.FichId = this_invoice_fich.FichId
+			db.session.commit()
+
+
 		if Config.DB_STRUCTURE == "saphasap":
 			InvLineRegNo, _ = fetch_and_generate_RegNo(
 				main_user.UId,
@@ -86,19 +99,22 @@ def checkout_invoice(data, att_data):
 			"InvLineFTotal": total_price,
 			"InvLineAmount": amount,
 		}
+		if Config.DB_STRUCTURE == "akhasap":
+			this_inv_line_data["FichId"] = this_invoice_fich.FichId
+
 		this_inv_line = Inv_line(**this_inv_line_data)
 		db.session.add(this_inv_line)
 
-		trans_totals = Rp_acc_trans_total.query.filter_by(RpAccId = data["RpAccId"]).all()
-		if not trans_totals:
-			new_rp_acc_tr_total = Rp_acc_trans_total(
-				RpAccId = data["RpAccId"],
-				RpAccTrTotDebit = total_price
-			)
-			db.session.add(new_rp_acc_tr_total)
+		# trans_totals = Rp_acc_trans_total.query.filter_by(RpAccId = data["RpAccId"]).all()
+		# if not trans_totals:
+		# 	new_rp_acc_tr_total = Rp_acc_trans_total(
+		# 		RpAccId = data["RpAccId"],
+		# 		RpAccTrTotDebit = total_price
+		# 	)
+		# 	db.session.add(new_rp_acc_tr_total)
 
-		else:
-			trans_totals[0].RpAccTrTotDebit += float(total_price)
+		# else:
+		# 	trans_totals[0].RpAccTrTotDebit += float(total_price)
 
 		db.session.commit()
 
