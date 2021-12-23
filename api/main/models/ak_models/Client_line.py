@@ -29,8 +29,8 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from main import db
 
-class Mat_trans_line(db.Model):
-	__tablename__ = "tbl_mg_mat_trans_line"
+class Client_line(db.Model):
+	__tablename__ = "tbl_mg_clientlines"
 	cl_id = db.Column("cl_id",db.Integer,nullable=False,primary_key=True)
 	cl_datetime = db.Column("cl_datetime",db.DateTime,default=datetime.now())
 	cl_total = db.Column("cl_total",db.Float)

@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from main.parking_api.akhasap_lines_convert import akhasap_line_convert
 from main import db
 
 from main.models import (
@@ -116,6 +117,7 @@ def checkout_invoice(data, att_data):
 		# 	trans_totals[0].RpAccTrTotDebit += float(total_price)
 
 		db.session.commit()
+		akhasap_line_convert(this_invoice, this_inv_line, data["RpAccId"])
 
 		serial_print_invoice(this_invoice.InvId)
 
