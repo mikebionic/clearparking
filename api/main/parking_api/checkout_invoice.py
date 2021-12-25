@@ -102,22 +102,24 @@ def checkout_invoice(data, att_data):
 		if Config.DB_STRUCTURE == "akhasap":
 			this_inv_line_data["FichId"] = this_invoice_fich.FichId
 
-		this_inv_line = Inv_line(**this_inv_line_data)
-		db.session.add(this_inv_line)
+		if Config.INSERT_TRANS_TOTAL:
+			this_inv_line = Inv_line(**this_inv_line_data)
+			db.session.add(this_inv_line)
 
-		# trans_totals = Rp_acc_trans_total.query.filter_by(RpAccId = data["RpAccId"]).all()
-		# if not trans_totals:
-		# 	new_rp_acc_tr_total = Rp_acc_trans_total(
-		# 		RpAccId = data["RpAccId"],
-		# 		RpAccTrTotDebit = total_price
-		# 	)
-		# 	db.session.add(new_rp_acc_tr_total)
+			trans_totals = Rp_acc_trans_total.query.filter_by(RpAccId = data["RpAccId"]).all()
+			if not trans_totals:
+				new_rp_acc_tr_total = Rp_acc_trans_total(
+					RpAccId = data["RpAccId"],
+					RpAccTrTotDebit = total_price
+				)
+				db.session.add(new_rp_acc_tr_total)
 
-		# else:
-		# 	trans_totals[0].RpAccTrTotDebit += float(total_price)
+			else:
+				trans_totals[0].RpAccTrTotDebit += float(total_price)
 
 		db.session.commit()
-		akhasap_line_convert(this_invoice, this_inv_line, data["RpAccId"])
+		if Config.INSERT_AKHASAP_LINES:
+			akhasap_line_convert(this_invoice, this_inv_line, data["RpAccId"])
 
 		serial_print_invoice(this_invoice.InvId)
 
