@@ -110,12 +110,12 @@ def checkout_invoice(data, att_data):
 			if not trans_totals:
 				new_rp_acc_tr_total = Rp_acc_trans_total(
 					RpAccId = data["RpAccId"],
-					RpAccTrTotDebit = total_price
+					RpAccTrTotBalance = total_price
 				)
 				db.session.add(new_rp_acc_tr_total)
 
 			else:
-				trans_totals[0].RpAccTrTotDebit += float(total_price)
+				trans_totals[0].RpAccTrTotBalance += float(total_price)
 
 		db.session.commit()
 		if Config.INSERT_AKHASAP_LINES:
