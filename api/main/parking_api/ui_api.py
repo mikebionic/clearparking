@@ -4,28 +4,37 @@ from sqlalchemy.orm import joinedload
 from main import app
 from main.models import (
 	Rp_acc,
-	# Device,
 	Rp_acc_trans_total,
 	Invoice,
 	Inv_line,
 	Attendance,
 )
 
+from main.config import Config
+
 @app.route("/clearpark/rp-accs/")
 def clearpark_rp_accs():
-	rp_accs = Rp_acc.query\
-		.options(
-			# joinedload(Rp_acc.Device),
-			joinedload(Rp_acc.Rp_acc_trans_total)			
-		)\
-		.order_by(Rp_acc.CreatedDate.desc())\
-		.all()
+	# rp_accs = Rp_acc.query\
+	# 	.options(
+	# 		# joinedload(Rp_acc.Device),
+	# 		joinedload(Rp_acc.Rp_acc_trans_total)			
+	# 	)\
+	# 	.order_by(Rp_acc.CreatedDate.desc())\
+	# 	.all()
+
+	rp_accs = Rp_acc.query.all()
 	
 	data = []
+	
 	for rp_acc in rp_accs:
 		rp_data = rp_acc.to_json_api()
-		rp_data["Rp_acc_trans_total"] = [total.to_json_api() for total in rp_acc.Rp_acc_trans_total]
+		# rp_data["Rp_acc_trans_total"] = [total.to_json_api() for total in rp_acc.Rp_acc_trans_total]
 		# rp_data["Device"] = [device.to_json_api() for device in rp_acc.Device]
+
+		this_trans_total = Rp_acc_trans_total.query.filter_by(RpAccId = rp_acc.RpAccId).first()
+		rp_data["Rp_acc_trans_total"] = this_trans_total.to_json_api()
+
+
 		data.append(rp_data)
 
 	res = {
@@ -38,9 +47,13 @@ def clearpark_rp_accs():
 
 @app.route("/clearpark/attendances/")
 def clearpark_attendances():
-	attendances = Attendance.query\
-		.order_by(Attendance.AttDate.desc())\
-		.all()
+	rpAccId = request.args.get("rpAccId", int, None)
+	
+	attendance_query = Attendance.query\
+		.order_by(Attendance.AttDate.desc())
+	if rpAccId:
+		attendance_query = attendance_query.filter_by(RpAccId = rpAccId)
+	attendances = attendance_query.all()
 	
 	data = []
 	for attendance in attendances:
@@ -51,6 +64,32 @@ def clearpark_attendances():
 		"status": 1 if data else 0,
 		"data": data,
 		"message": "Attendances"
+	}
+	return make_response(res, 200)
+
+
+
+@app.route("/clearpark/invoices/")
+def clearpark_invoices():
+	rpAccId = request.args.get("rpAccId", int, None)
+	
+	inv_query = Invoice.query\
+		.order_by(Invoice.CreatedDate.desc())
+	if rpAccId:
+		inv_query = inv_query.filter_by(RpAccId = rpAccId)
+	invoices = inv_query.all()
+	
+	data = []
+	for inv in invoices:
+		inv_data = inv.to_json_api()
+		this_inv_line = Inv_line.query.filter_by(InvId = inv.InvId).all()
+		inv_data["Inv_line"] = this_inv_line.to_json_api()
+		data.append(inv_data)
+
+	res = {
+		"status": 1 if data else 0,
+		"data": data,
+		"message": "invoices"
 	}
 	return make_response(res, 200)
 

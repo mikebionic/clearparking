@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_login import LoginManager
 from main.config import Config
-import pyodbc
+# import pyodbc
 
 app = Flask(__name__)
 app.config.from_object(Config)
