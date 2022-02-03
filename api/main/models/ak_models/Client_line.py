@@ -29,7 +29,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from main import db
 
-class Client_line(db.Model):
+class Client_line_akhasap(db.Model):
 	__tablename__ = "tbl_mg_clientlines"
 	__table_args__ = {'implicit_returning': False}
 	cl_id = db.Column("cl_id",db.Integer,nullable=False,primary_key=True)

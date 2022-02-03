@@ -1,6 +1,6 @@
 from main import db
 
-class Barcode(db.Model):
+class Barcode_akhasap(db.Model):
 	__tablename__ = "tbl_mg_barcode"
 	BarcodeId = db.Column("bar_id",db.Integer,nullable=False,primary_key=True)
 	ResId = db.Column("material_id",db.Integer)

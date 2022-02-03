@@ -1,6 +1,6 @@
 from main import db
 
-class Exc_rate(db.Model):
+class Exc_rate_akhasap(db.Model):
 	__tablename__ = "tbl_mg_exchange_rate"
 	ExcRateId = db.Column("exch_id",db.Integer,nullable=False,primary_key=True)
 	ExcRateValue = db.Column("exch_value",db.Float)

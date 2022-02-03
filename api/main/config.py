@@ -33,6 +33,7 @@ class Config:
 	if DB_TYPE.lower() == "postgres":
 		SQLALCHEMY_DATABASE_URI = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s%(additionalFields)s' % DB_URI_DATA
 
+	print(SQLALCHEMY_DATABASE_URI)
 	SQLALCHEMY_ECHO = int(environ.get('SQLALCHEMY_ECHO')) if environ.get('SQLALCHEMY_ECHO') else 0
 	API_URL_PREFIX = environ.get('API_URL_PREFIX') or '/api'
 

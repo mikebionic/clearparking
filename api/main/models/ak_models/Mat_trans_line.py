@@ -43,7 +43,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from main import db
 
-class Mat_trans_line(db.Model):
+class Mat_trans_line_akhasap(db.Model):
 	__tablename__ = "tbl_mg_mat_trans_line"
 	__table_args__ = {'implicit_returning': False}
 	mat_trans_line_id = db.Column("mat_trans_line_id",db.Integer,nullable=False,primary_key=True)

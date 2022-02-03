@@ -118,7 +118,7 @@ def checkout_invoice(data, att_data):
 				trans_totals[0].RpAccTrTotBalance += float(total_price)
 
 		db.session.commit()
-		if Config.INSERT_AKHASAP_LINES:
+		if Config.INSERT_AKHASAP_LINES and Config.DB_STRUCTURE == "akhasap":
 			akhasap_line_convert(this_invoice, this_inv_line, data["RpAccId"])
 
 		serial_print_invoice(this_invoice.InvId)

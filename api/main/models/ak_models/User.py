@@ -6,7 +6,7 @@ from main import db
 from main.config import Config
 
 
-class User(db.Model, UserMixin):
+class User_akhasap(db.Model, UserMixin):
 	__tablename__ = "Teachers"
 	UId = db.Column("T_ID",db.Integer,nullable=False,primary_key=True)
 	UGuid = db.Column("UGuid",UUID(as_uuid=True),unique=True)

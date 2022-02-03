@@ -2,8 +2,11 @@
 import uuid
 
 from main import db
-from main.models.ak_models.Client_line import Client_line
-from main.models.ak_models.Mat_trans_line import Mat_trans_line
+from main.config import Config
+
+if Config.DB_STRUCTURE == "akhasap":
+	from main.models import Client_line
+	from main.models import Mat_trans_line
 
 
 def akhasap_line_convert(invoice, inv_line, RpAccId):

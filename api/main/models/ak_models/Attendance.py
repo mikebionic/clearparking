@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from main import db
 
-class Attendance(db.Model):
+class Attendance_akhasap(db.Model):
 	__tablename__ = "tbl_mg_arap_attandence"
 	AttId = db.Column("arap_att_id",db.Integer,nullable=False,primary_key=True)
 	AttGuid = db.Column("arap_att_id_guid",UUID(as_uuid=True),unique=True)

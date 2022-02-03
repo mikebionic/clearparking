@@ -6,7 +6,7 @@ from main import db
 from main.base.dataMethods import configureFloat, apiDataFormat
 
 
-class InvoiceFich(db.Model):
+class InvoiceFich_akhasap(db.Model):
 	__tablename__ = "tbl_mg_fich"
 	__table_args__ = {'implicit_returning': False}
 	FichId = db.Column("fich_id",db.Integer,nullable=False,primary_key=True)
@@ -43,7 +43,7 @@ class InvoiceFich(db.Model):
 
 		return data
 
-class Invoice(db.Model):
+class Invoice_akhasap(db.Model):
 	__tablename__ = "tbl_mg_invoice"
 	__table_args__ = {'implicit_returning': False}
 	InvId = db.Column("inv_id",db.Integer,nullable=False,primary_key=True)

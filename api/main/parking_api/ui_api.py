@@ -12,6 +12,7 @@ from main.models import (
 
 from main.config import Config
 
+
 @app.route("/clearpark/rp-accs/")
 def clearpark_rp_accs():
 	# rp_accs = Rp_acc.query\
@@ -32,7 +33,7 @@ def clearpark_rp_accs():
 		# rp_data["Device"] = [device.to_json_api() for device in rp_acc.Device]
 
 		this_trans_total = Rp_acc_trans_total.query.filter_by(RpAccId = rp_acc.RpAccId).first()
-		rp_data["Rp_acc_trans_total"] = this_trans_total.to_json_api()
+		rp_data["Rp_acc_trans_total"] = this_trans_total.to_json_api() if this_trans_total else {}
 
 
 		data.append(rp_data)

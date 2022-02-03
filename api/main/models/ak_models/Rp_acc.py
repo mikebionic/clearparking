@@ -2,7 +2,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from main import db
 
-class Rp_acc(db.Model):
+class Rp_acc_akhasap(db.Model):
 	__tablename__ = "tbl_mg_arap"
 	RpAccId = db.Column("arap_id",db.Integer,nullable=False,primary_key=True)
 	RpAccGuid = db.Column("arap_id_guid",UUID(as_uuid=True),unique=True)

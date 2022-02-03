@@ -1,11 +1,14 @@
-from .Attendance import *
-from .Barcode import *
-from .Currency import *
-from .Exc_rate import *
-from .Inv_line import *
-from .Invoice import *
-from .Res_price import *
-from .Resource import *
-from .Rp_acc_trans_total import *
-from .Rp_acc import *
-from .User import *
+from .Attendance import Attendance_akhasap as Attendance
+from .Barcode import Barcode_akhasap as Barcode
+from .Client_line import Client_line_akhasap as Client_line
+from .Currency import Currency_akhasap as Currency
+from .Exc_rate import Exc_rate_akhasap as Exc_rate
+from .Inv_line import Inv_line_akhasap as Inv_line
+from .Invoice import Invoice_akhasap as Invoice
+from .Invoice import InvoiceFich_akhasap as InvoiceFich
+from .Mat_trans_line import Mat_trans_line_akhasap as Mat_trans_line
+from .Res_price import Res_price_akhasap as Res_price
+from .Resource import Resource_akhasap as Resource
+from .Rp_acc_trans_total import Rp_acc_trans_total_akhasap as Rp_acc_trans_total
+from .Rp_acc import Rp_acc_akhasap as Rp_acc
+from .User import User_akhasap as User

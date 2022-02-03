@@ -1,6 +1,6 @@
 from main import db
 
-class Res_price(db.Model):
+class Res_price_akhasap(db.Model):
 	__tablename__ = "tbl_mg_mat_price"
 	ResPriceId = db.Column("price_id",db.Integer,nullable=False,primary_key=True)
 	ResPriceTypeId = db.Column("price_type_id",db.Integer)
