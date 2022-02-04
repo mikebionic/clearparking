@@ -23,7 +23,7 @@ def clearpark_rp_accs():
 	# 	.order_by(Rp_acc.CreatedDate.desc())\
 	# 	.all()
 
-	rp_accs = Rp_acc.query.all()
+	rp_accs = Rp_acc.query.order_by(Rp_acc.CreatedDate.desc()).all()
 	
 	data = []
 	
@@ -72,12 +72,18 @@ def clearpark_attendances():
 
 @app.route("/clearpark/invoices/")
 def clearpark_invoices():
-	rpAccId = request.args.get("rpAccId", int, None)
+	RpAccId = request.args.get("RpAccId", int, None)
+
+	if not RpAccId:
+		rp_accs_list = Rp_acc.query.filter_by.all()
 	
+	if RpAccId:
+		this_inv_rp_acc = Rp_acc.query.filter_by(RpAccId = RpAccId).first()
+
 	inv_query = Invoice.query\
 		.order_by(Invoice.CreatedDate.desc())
-	if rpAccId:
-		inv_query = inv_query.filter_by(RpAccId = rpAccId)
+	if RpAccId:
+		inv_query = inv_query.filter_by(RpAccId = RpAccId)
 	invoices = inv_query.all()
 	
 	data = []
@@ -85,6 +91,17 @@ def clearpark_invoices():
 		inv_data = inv.to_json_api()
 		this_inv_line = Inv_line.query.filter_by(InvId = inv.InvId).all()
 		inv_data["Inv_line"] = this_inv_line.to_json_api()
+
+		try:
+			if RpAccId:
+				inv_data["Rp_acc"] = this_inv_rp_acc.to_json_api()
+			else:
+				inv_rp_list = [rp_query for rp_query in rp_accs_list if rp_query.RpAccId == this_inv_line.RpAccId ]
+				inv_data["Rp_acc"] = inv_rp_list[0]
+
+		except:
+			inv_data["Rp_acc"] = {}
+
 		data.append(inv_data)
 
 	res = {
