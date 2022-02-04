@@ -15,26 +15,13 @@ from main.config import Config
 
 @app.route("/clearpark/rp-accs/")
 def clearpark_rp_accs():
-	# rp_accs = Rp_acc.query\
-	# 	.options(
-	# 		# joinedload(Rp_acc.Device),
-	# 		joinedload(Rp_acc.Rp_acc_trans_total)			
-	# 	)\
-	# 	.order_by(Rp_acc.CreatedDate.desc())\
-	# 	.all()
-
-	rp_accs = Rp_acc.query.order_by(Rp_acc.CreatedDate.desc()).all()
-	
 	data = []
 	
+	rp_accs = Rp_acc.query.order_by(Rp_acc.CreatedDate.desc()).all()
 	for rp_acc in rp_accs:
 		rp_data = rp_acc.to_json_api()
-		# rp_data["Rp_acc_trans_total"] = [total.to_json_api() for total in rp_acc.Rp_acc_trans_total]
-		# rp_data["Device"] = [device.to_json_api() for device in rp_acc.Device]
-
 		this_trans_total = Rp_acc_trans_total.query.filter_by(RpAccId = rp_acc.RpAccId).first()
 		rp_data["Rp_acc_trans_total"] = this_trans_total.to_json_api() if this_trans_total else {}
-
 
 		data.append(rp_data)
 
@@ -48,7 +35,7 @@ def clearpark_rp_accs():
 
 @app.route("/clearpark/attendances/")
 def clearpark_attendances():
-	rpAccId = request.args.get("rpAccId", int, None)
+	rpAccId = request.args.get("rpAccId", None, int)
 	
 	attendance_query = Attendance.query\
 		.order_by(Attendance.AttDate.desc())
@@ -72,10 +59,10 @@ def clearpark_attendances():
 
 @app.route("/clearpark/invoices/")
 def clearpark_invoices():
-	RpAccId = request.args.get("RpAccId", int, None)
+	RpAccId = request.args.get("RpAccId", None, int)
 
 	if not RpAccId:
-		rp_accs_list = Rp_acc.query.filter_by.all()
+		rp_accs_list = Rp_acc.query.all()
 	
 	if RpAccId:
 		this_inv_rp_acc = Rp_acc.query.filter_by(RpAccId = RpAccId).first()
@@ -89,14 +76,14 @@ def clearpark_invoices():
 	data = []
 	for inv in invoices:
 		inv_data = inv.to_json_api()
-		this_inv_line = Inv_line.query.filter_by(InvId = inv.InvId).all()
-		inv_data["Inv_line"] = this_inv_line.to_json_api()
+		this_inv_lines_list = Inv_line.query.filter_by(InvId = inv.InvId).all()
+		inv_data["Inv_lines"] = [inv_line.to_json_api() for inv_line in this_inv_lines_list]
 
 		try:
 			if RpAccId:
 				inv_data["Rp_acc"] = this_inv_rp_acc.to_json_api()
 			else:
-				inv_rp_list = [rp_query for rp_query in rp_accs_list if rp_query.RpAccId == this_inv_line.RpAccId ]
+				inv_rp_list = [rp_query for rp_query in rp_accs_list if rp_query.RpAccId == inv.RpAccId ]
 				inv_data["Rp_acc"] = inv_rp_list[0]
 
 		except:
