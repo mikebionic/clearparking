@@ -1,3 +1,4 @@
+from api.main.parking_api.checkout_invoice import get_entrance_date
 from flask import request, make_response
 from sqlalchemy.orm import joinedload
 
@@ -77,7 +78,17 @@ def clearpark_invoices():
 	for inv in invoices:
 		inv_data = inv.to_json_api()
 		this_inv_lines_list = Inv_line.query.filter_by(InvId = inv.InvId).all()
-		inv_data["Inv_lines"] = [inv_line.to_json_api() for inv_line in this_inv_lines_list]
+
+		parking_time = None
+		inv_lines_list = []
+		for inv_line in this_inv_lines_list:
+			inv_lines_list.append(inv_line.to_json_api())
+			parking_time = inv_line.InvLineAmount
+
+		# inv_data["Inv_lines"] = inv_lines_list
+		inv_data["exit_date"] = inv.CreatedDate
+		inv_data["parking_time"] = parking_time
+		inv_data["entrance_date"] = get_entrance_date(inv.CreatedDate, parking_time)
 
 		try:
 			if RpAccId:

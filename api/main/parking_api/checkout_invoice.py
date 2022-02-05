@@ -132,7 +132,12 @@ def checkout_invoice(data, att_data):
 def calculate_attendance_price(entrance_date, exit_date, resource_price):
 	amount, price = None, None
 	diff = exit_date - entrance_date
-	diff_in_minutes = int(diff.total_seconds() / 60)
-	amount = diff_in_minutes
-	price = resource_price * diff_in_minutes
+	amount = int(diff.total_seconds() / 60)
+	price = resource_price * amount
 	return amount, price
+
+
+from datetime import timedelta
+
+def get_entrance_date(exit_date, amount):
+	return exit_date - timedelta(minutes=amount)
