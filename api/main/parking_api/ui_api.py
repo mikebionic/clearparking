@@ -1,6 +1,4 @@
-from api.main.parking_api.checkout_invoice import get_entrance_date
 from flask import request, make_response
-from sqlalchemy.orm import joinedload
 
 from main import app
 from main.models import (
@@ -11,7 +9,7 @@ from main.models import (
 	Attendance,
 )
 
-from main.config import Config
+from main.parking_api.checkout_invoice import get_entrance_date
 
 
 @app.route("/clearpark/rp-accs/")
