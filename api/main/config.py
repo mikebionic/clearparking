@@ -1,6 +1,7 @@
 import sys
 from os import environ, path
 from dotenv import load_dotenv
+import json
 
 basedir = path.abspath('.')
 load_dotenv(path.join(basedir, '.env'))
@@ -61,3 +62,8 @@ class Config:
 
 	INSERT_TRANS_TOTAL = int(environ.get('INSERT_TRANS_TOTAL')) if environ.get('INSERT_TRANS_TOTAL') else 1
 	INSERT_AKHASAP_LINES = int(environ.get('INSERT_AKHASAP_LINES')) if environ.get('INSERT_AKHASAP_LINES') else 1
+
+	STATIC_FOLDER_PATH = path.join(*json.loads(environ.get('STATIC_FOLDER_PATH'))) if environ.get('STATIC_FOLDER_PATH') else path.join('main_pack','static')
+	STATIC_FOLDER_LOCATION = path.join(APP_BASEDIR, STATIC_FOLDER_PATH)
+	TEMPLATE_FOLDER_PATH = path.join(*json.loads(environ.get('TEMPLATE_FOLDER_PATH'))) if environ.get('TEMPLATE_FOLDER_PATH') else path.join('main_pack','templates')
+	TEMPLATE_FOLDER_LOCATION = path.join(APP_BASEDIR, TEMPLATE_FOLDER_PATH)

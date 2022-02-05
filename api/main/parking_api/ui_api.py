@@ -1,4 +1,4 @@
-from flask import request, make_response
+from flask import request, make_response, render_template
 
 from main import app
 from main.models import (
@@ -106,6 +106,10 @@ def clearpark_invoices():
 		"message": "invoices"
 	}
 	return make_response(res, 200)
+
+@app.route('/')
+def home_page():
+	return(render_template("index.html"))
 
 
 # @app.route("/clearpark/devices/")
