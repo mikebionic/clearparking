@@ -67,7 +67,7 @@ def clearpark_invoices():
 		this_inv_rp_acc = Rp_acc.query.filter_by(RpAccId = RpAccId).first()
 
 	inv_query = Invoice.query\
-		.order_by(Invoice.CreatedDate.desc())
+		.order_by(Invoice.InvDate.desc())
 	if RpAccId:
 		inv_query = inv_query.filter_by(RpAccId = RpAccId)
 	invoices = inv_query.all()
@@ -84,15 +84,15 @@ def clearpark_invoices():
 			parking_time = inv_line.InvLineAmount
 
 		# inv_data["Inv_lines"] = inv_lines_list
-		inv_data["exit_date"] = inv.CreatedDate
+		inv_data["exit_date"] = inv.InvDate
 		inv_data["parking_time"] = parking_time
-		inv_data["entrance_date"] = get_entrance_date(inv.CreatedDate, parking_time)
+		inv_data["entrance_date"] = get_entrance_date(inv.InvDate, parking_time)
 
 		try:
 			if RpAccId:
 				inv_data["Rp_acc"] = this_inv_rp_acc.to_json_api()
 			else:
-				inv_rp_list = [rp_query for rp_query in rp_accs_list if rp_query.RpAccId == inv.RpAccId ]
+				inv_rp_list = [rp_query.to_json_api() for rp_query in rp_accs_list if rp_query.RpAccId == inv.RpAccId ]
 				inv_data["Rp_acc"] = inv_rp_list[0]
 
 		except:
