@@ -26,6 +26,7 @@ def serial_print_invoice(id):
 	try:
 		if Config.USE_SERIAL_PRINTER:
 			os_response = os.popen(f"{Config.SERIAL_PRINTER_EXECUTION_COMMAND} {id}").read()
+			print(Config.SERIAL_PRINTER_EXECUTION_COMMAND,id, os_response)
 	except Exception as ex:
 		print(f"serial_print_invoice exception {ex}")
 

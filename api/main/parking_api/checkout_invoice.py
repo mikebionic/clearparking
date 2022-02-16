@@ -121,6 +121,7 @@ def checkout_invoice(data, att_data):
 		if Config.INSERT_AKHASAP_LINES and Config.DB_STRUCTURE == "akhasap":
 			akhasap_line_convert(this_invoice, this_inv_line, data["RpAccId"])
 
+		print("printing invoice ", this_invoice, " Id ", this_invoice.InvId)
 		serial_print_invoice(this_invoice.InvId)
 
 	except Exception as ex:
