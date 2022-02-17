@@ -70,6 +70,7 @@ def checkout_invoice(data, att_data):
 		this_invoice = Invoice(**this_invoice_data)
 		db.session.add(this_invoice)
 		db.session.commit()
+		parking_inv = this_invoice.InvId
 
 		if Config.DB_STRUCTURE == "akhasap":
 			this_invoice_fich = InvoiceFich(**this_invoice_data)
@@ -78,6 +79,7 @@ def checkout_invoice(data, att_data):
 			this_invoice_fich.InvId = this_invoice.InvId
 			this_invoice.FichId = this_invoice_fich.FichId
 			db.session.commit()
+			parking_inv = this_invoice_fich.FichId
 
 
 		if Config.DB_STRUCTURE == "saphasap":
@@ -121,8 +123,8 @@ def checkout_invoice(data, att_data):
 		if Config.INSERT_AKHASAP_LINES and Config.DB_STRUCTURE == "akhasap":
 			akhasap_line_convert(this_invoice, this_inv_line, data["RpAccId"])
 
-		print("printing invoice ", this_invoice, " Id ", this_invoice.InvId)
-		serial_print_invoice(this_invoice.InvId)
+		print("printing invoice ", this_invoice, " Id ", parking_inv)
+		serial_print_invoice(parking_inv)
 
 	except Exception as ex:
 		print(f"++clearparking++ {datetime.now()} | checkout park invoice exception {ex}")
