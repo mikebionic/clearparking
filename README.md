@@ -1,8 +1,8 @@
 # ClearParking Smart parking IoT System
 
 Watch the Video showcasing the Project:
-https://youtu.be/48IGrkGlwJY
-<iframe width="560" height="315" src="https://www.youtube.com/embed/48IGrkGlwJY?si=smXVvzUTzdCm3VNt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+![Youtube Video](https://youtu.be/48IGrkGlwJY)
+
 
 ## Workflow
 
